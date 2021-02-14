@@ -1,1 +1,8 @@
 <H1>Tests Angular / SonarQube</H1>
+
+
+<p>
+Server : 
+<input [value]="sonarQubeServer" (input)="sonarQubeServer=$event.target.value" id="sonarQubeServer"/>
+<button (click)="go()">Go</button>
+</p>

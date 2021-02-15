@@ -1,5 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { take } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-root',
@@ -15,12 +17,8 @@ export class AppComponent {
   constructor(private httpClient : HttpClient) {}
 
   public go() {
-
-    this.initSonarServer('http://localhost:9000');
-		const subscription = this.httpClient
-			.get(this.sonarQubeServer + '/api/server/version', {responseType: 'text' as 'json' })
-        .subscribe({
-          next: (version: string) => console.log (version) });
+    this.initSonarServer(this.sonarQubeServer.replace('localhost:9000', 'localhost:4200'));
+	this.loadSonarSupportedMetrics(this.sonarQubeServer.replace('localhost:9000', 'localhost:4200'));
   }
 
 	/**
@@ -36,5 +34,38 @@ export class AppComponent {
 				});
 	}
 
+
+	public authenticate(urlSonar: string) {
+
+		const params = new HttpParams()
+			.set('login', 'admin')
+			.set('password', 'parissg75');
+
+		this.httpClient
+			.post<boolean>(urlSonar + '/api/authentication/login',  '', { params: params, observe: 'response'})
+			.pipe(take(1))
+			.subscribe({
+				next: r  => {
+					console.log ('Authentication Ok');
+				},
+			})
+	}
+
+	/**
+	 * Load the supported metrics of this Sonar server, which are supported by the application.
+	 * @param urlSonar the URL of the Sonar server
+	 */
+	private loadSonarSupportedMetrics(urlSonar: string) {
+
+		let headers: HttpHeaders = new HttpHeaders();
+
+		// No authentication required
+		// const authdata = 'Basic ' + btoa('admin:parissg75');
+		// headers = headers.append('Authorization', authdata);
+
+		this.httpClient.get(urlSonar + '/api/metrics/search?ps=500', {headers: headers}).subscribe({
+			next: metrics => { console.log(metrics); }
+		});
+	}
 
 }

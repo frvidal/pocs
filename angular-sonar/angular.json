@@ -62,7 +62,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-sonar:build"
+            "browserTarget": "angular-sonar:build",
+            "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {

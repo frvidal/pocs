@@ -1,0 +1,14 @@
+{
+    "/api/metrics": {
+      "target": "http://localhost:9000",
+      "secure": false
+    },
+    "/api/server/version": {
+        "target": "http://localhost:9000",
+        "secure": false
+      },
+      "/api/authentication/login": {
+        "target": "http://localhost:9000",
+        "secure": false
+      }
+  }

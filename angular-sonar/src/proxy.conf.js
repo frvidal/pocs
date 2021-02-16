@@ -1,14 +1,14 @@
 const PROXY_CONFIG = [
 	{
 			context: [
-					"/sonar1/api/metrics",
-					"/sonar1/api/server/version",
-					"/sonar1/api/authentication/login"
+					"/pocs/sonar1/api/metrics",
+					"/pocs/sonar1/api/server/version",
+					"/pocs/sonar1/api/authentication/login"
 			],
 			target: "http://localhost:9000",
 			secure: false,
 			pathRewrite: {
-				"/sonar1/": "/"
+				"/pocs/sonar1/": "/"
 			},
 			logLevel: "debug",
 	}

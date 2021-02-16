@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { take } from 'rxjs/operators';
-
+import { of } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -13,12 +13,22 @@ export class AppComponent {
 
   public sonarQubeServer = 'http://localhost:9000';
 
+  public proxy = true;
 
   constructor(private httpClient : HttpClient) {}
 
   public go() {
-    this.initSonarServer(this.sonarQubeServer.replace('localhost:9000', 'localhost:4200'));
-	this.loadSonarSupportedMetrics(this.sonarQubeServer.replace('localhost:9000', 'localhost:4200'));
+	const urlSonar = (this.proxy) ?
+		this.sonarQubeServer.replace('localhost:9000', 'localhost:4200/sonar1') : this.sonarQubeServer;
+
+	this.initSonarServer(urlSonar);
+	if (this.proxy) {
+		this.loadSonarSupportedMetrics(urlSonar);
+	} else {
+		this.authenticate(urlSonar).subscribe({
+			next: doneAndOk => this.loadSonarSupportedMetrics(urlSonar)
+		});
+	}
   }
 
 	/**
@@ -26,6 +36,7 @@ export class AppComponent {
 	 * @param urlSonar the URL of the Sonar server
 	 */
 	private initSonarServer(urlSonar: string) {
+		console.log('initSonarServer("' + urlSonar + '")');
 		const subscription = this.httpClient
 			.get(urlSonar + '/api/server/version', { responseType: 'text' as 'json' })
 				.subscribe({
@@ -41,14 +52,11 @@ export class AppComponent {
 			.set('login', 'admin')
 			.set('password', 'parissg75');
 
-		this.httpClient
+		return this.httpClient
 			.post<boolean>(urlSonar + '/api/authentication/login',  '', { params: params, observe: 'response'})
-			.pipe(take(1))
-			.subscribe({
-				next: r  => {
-					console.log ('Authentication Ok');
-				},
-			})
+			.pipe(
+				take(1),
+				switchMap(r => { return of<boolean>(true); }));
 	}
 
 	/**
@@ -60,12 +68,15 @@ export class AppComponent {
 		let headers: HttpHeaders = new HttpHeaders();
 
 		// No authentication required
-		// const authdata = 'Basic ' + btoa('admin:parissg75');
-		// headers = headers.append('Authorization', authdata);
+		const authdata = 'Basic ' + btoa('admin:parissg75');
+		headers = headers.append('Authorization', authdata);
 
-		this.httpClient.get(urlSonar + '/api/metrics/search?ps=500', {headers: headers}).subscribe({
+		this.httpClient.get(urlSonar + '/api/metrics/search?ps=500', {headers: headers, withCredentials: true}).subscribe({
 			next: metrics => { console.log(metrics); }
 		});
 	}
 
+	public changeProxy($event:any) {
+		this.proxy = $event.target.checked;
+	}
 }

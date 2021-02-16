@@ -13,16 +13,18 @@ export class AppComponent {
 
   public sonarQubeServer = 'http://localhost:9000';
 
-  public proxy = true;
+  public reverseProxy = true;
+
+  public version = '';
 
   constructor(private httpClient : HttpClient) {}
 
   public go() {
-	const urlSonar = (this.proxy) ?
-		this.sonarQubeServer.replace('localhost:9000', 'localhost:4200/sonar1') : this.sonarQubeServer;
+	const urlSonar = (this.reverseProxy) ?
+		this.sonarQubeServer.replace('http://localhost:9000', window.location.origin +'/sonar1') : this.sonarQubeServer;
 
 	this.initSonarServer(urlSonar);
-	if (this.proxy) {
+	if (this.reverseProxy) {
 		this.loadSonarSupportedMetrics(urlSonar);
 	} else {
 		this.authenticate(urlSonar).subscribe({
@@ -45,7 +47,7 @@ export class AppComponent {
 		const subscription = this.httpClient
 			.get(urlSonar + '/api/server/version', { responseType: 'text' as 'json' })
 				.subscribe({
-					next: result => console.log (result),
+					next: (result: string) => this.version = result,
 					complete: () => setTimeout(() => { subscription.unsubscribe(); } , 0)
 				});
 	}
@@ -84,6 +86,6 @@ export class AppComponent {
 	}
 
 	public changeProxy($event:any) {
-		this.proxy = $event.target.checked;
+		this.reverseProxy = $event.target.checked;
 	}
 }

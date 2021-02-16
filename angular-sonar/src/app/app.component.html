@@ -1,9 +1,11 @@
 <H1>Tests Angular / SonarQube</H1>
 
-
 <p>
 Server : 
 <input [value]="sonarQubeServer" (input)="sonarQubeServer=$event.target.value" id="sonarQubeServer"/>
 <button (click)="go()">Go</button>
-<input type="checkbox" [checked]="proxy" (change)="changeProxy($event)">Reverse Proxy
+<input type="checkbox" [checked]="reverseProxy" (change)="changeProxy($event)">Reverse Proxy
+</p>
+<p>
+    Version {{version}}
 </p>

@@ -26,7 +26,12 @@ export class AppComponent {
 		this.loadSonarSupportedMetrics(urlSonar);
 	} else {
 		this.authenticate(urlSonar).subscribe({
-			next: doneAndOk => this.loadSonarSupportedMetrics(urlSonar)
+			next: doneAndOk => {
+				if (doneAndOk) {
+					console.log ('connected');
+					this.loadSonarSupportedMetrics(urlSonar);
+				}
+			}
 		});
 	}
   }
@@ -53,10 +58,12 @@ export class AppComponent {
 			.set('password', 'parissg75');
 
 		return this.httpClient
-			.post<boolean>(urlSonar + '/api/authentication/login',  '', { params: params, observe: 'response'})
+			.post<boolean>(urlSonar + '/api/authentication/login', '', { params: params})
 			.pipe(
 				take(1),
-				switchMap(r => { return of<boolean>(true); }));
+				switchMap(r => { 
+					return of(true); 
+				}));
 	}
 
 	/**
@@ -71,7 +78,7 @@ export class AppComponent {
 		const authdata = 'Basic ' + btoa('admin:parissg75');
 		headers = headers.append('Authorization', authdata);
 
-		this.httpClient.get(urlSonar + '/api/metrics/search?ps=500', {headers: headers, withCredentials: true}).subscribe({
+		this.httpClient.get(urlSonar + '/api/metrics/search?ps=500', {headers: headers}).subscribe({
 			next: metrics => { console.log(metrics); }
 		});
 	}

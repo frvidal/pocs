@@ -21,7 +21,8 @@ export class AppComponent {
 
   public go() {
 	const urlSonar = (this.reverseProxy) ?
-		this.sonarQubeServer.replace('http://localhost:9000', window.location.origin +'/sonar1') : this.sonarQubeServer;
+	
+		this.sonarQubeServer.replace('http://localhost:9000', window.location.origin + '/pocs/sonar1') : this.sonarQubeServer;
 
 	this.initSonarServer(urlSonar);
 	if (this.reverseProxy) {

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Component } from '@angular/core';
 import { of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
+import { Metric } from './metric';
 
 @Component({
   selector: 'app-root',
@@ -17,12 +18,16 @@ export class AppComponent {
 
   public version = '';
 
+  public prefixSonarQube = '/sonarqube';
+
+  public metrics = [];
+
   constructor(private httpClient : HttpClient) {}
 
   public go() {
 	const urlSonar = (this.reverseProxy) ?
-	
-		this.sonarQubeServer.replace('http://localhost:9000', window.location.origin + '/pocs/sonar1') : this.sonarQubeServer;
+		this.sonarQubeServer.replace('http://localhost:9000', window.location.origin + this.prefixSonarQube) : 
+		this.sonarQubeServer + this.prefixSonarQube;
 
 	this.initSonarServer(urlSonar);
 	if (this.reverseProxy) {
@@ -75,6 +80,8 @@ export class AppComponent {
 	 */
 	private loadSonarSupportedMetrics(urlSonar: string) {
 
+		this.metrics = [];
+
 		let headers: HttpHeaders = new HttpHeaders();
 
 		// No authentication required
@@ -82,11 +89,16 @@ export class AppComponent {
 		headers = headers.append('Authorization', authdata);
 
 		this.httpClient.get(urlSonar + '/api/metrics/search?ps=500', {headers: headers}).subscribe({
-			next: metrics => { console.log(metrics); }
+			next: (metrics: any) => { 
+				metrics.metrics.forEach(m => {
+					this.metrics.push (new Metric(m.key, m.name));
+				});
+			 }
 		});
 	}
 
 	public changeProxy($event:any) {
 		this.reverseProxy = $event.target.checked;
 	}
+
 }

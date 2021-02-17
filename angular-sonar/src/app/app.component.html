@@ -1,11 +1,30 @@
-<H1>Tests Angular / SonarQube</H1>
+<H2>Test connection between Angular & SonarQube and CORS issue</H2>
 
 <p>
-Server : 
-<input [value]="sonarQubeServer" (input)="sonarQubeServer=$event.target.value" id="sonarQubeServer"/>
-<button (click)="go()">Go</button>
-<input type="checkbox" [checked]="reverseProxy" (change)="changeProxy($event)">Reverse Proxy
+    Reverse proxy based on the url <span class="highlight">{{prefixSonarQube}}</span>
 </p>
+
+<p>
+    Server : 
+    <input [value]="sonarQubeServer" (input)="sonarQubeServer=$event.target.value" id="sonarQubeServer"/>
+    <button (click)="go()">Go</button>
+    <input type="checkbox" [checked]="reverseProxy" (change)="changeProxy($event)">Reverse Proxy
+</p>
+
 <p>
     Version : {{version}}
 </p>
+
+<p>
+    <select>
+        <option *ngFor="let metric of metrics" [value]="metric.key">{{metric.name}}
+        </option>
+    </select> 
+</p>
+
+<span class="highlight">
+    The connection without reverse proxy is throwing the error :
+</span><br/>
+<span class="error">
+    Access to XMLHttpRequest at 'http://localhost:9000/sonarqube/api/metrics/search?ps=500' from origin 'http://localhost:4200' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+</span>

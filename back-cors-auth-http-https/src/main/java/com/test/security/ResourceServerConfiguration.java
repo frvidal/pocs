@@ -22,9 +22,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/api/test-secure/**")
-			.access("hasRole('USER')")
-			.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+		.antMatchers("/api/ping").permitAll()
+		.antMatchers("/**").access("hasRole('ROLE_TRUSTED_CLIENT')")
+		.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 	}
 	
 }

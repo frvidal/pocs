@@ -41,7 +41,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	/**
 	 * Duration of the refresh Token
 	 */
-	private int refreshTokenDuration = 20;
+	private int refreshTokenDuration = 60;
 
 	public static final String TRUSTED_CLIENT_USERNAME = "test-trusted-client";
 	
@@ -50,12 +50,13 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
 		clients.inMemory()
 	        .withClient(TRUSTED_CLIENT_USERNAME)
-            .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
-            .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
+            .authorizedGrantTypes("password", "refresh_token")
+//            .authorizedGrantTypes("password", "authorization_code", "refresh_token", "implicit")
+            .authorities("ROLE_TRUSTED_CLIENT")
             .scopes("read", "write", "trust")
             .secret("secret")
-            .accessTokenValiditySeconds(accessTokenDuration).
-            refreshTokenValiditySeconds(refreshTokenDuration);
+            .accessTokenValiditySeconds(accessTokenDuration)
+            .refreshTokenValiditySeconds(refreshTokenDuration);
 	}
 
 	@Override

@@ -20,6 +20,12 @@ public class CustomGrantedAuthority implements GrantedAuthority {
 	private static final long serialVersionUID = -6159897754284501386L;
 
 	/**
+	 * Empty constructor for serialization purpose.
+	 */
+	public CustomGrantedAuthority() {
+	}
+	
+	/**
 	 * Authority.
 	 */
 	String authority;
@@ -30,7 +36,7 @@ public class CustomGrantedAuthority implements GrantedAuthority {
 	 */
 	public CustomGrantedAuthority() {
 		super();
-		this.authority = "ROLE_TRUSTED_CLIENT";
+		this.authority = "ROLE_USER";
 	}
 
 

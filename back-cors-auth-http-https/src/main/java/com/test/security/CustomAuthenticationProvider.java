@@ -26,10 +26,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		String password = authentication.getCredentials().toString();
 		 
 		if ( ("myTestUser".equals(name)) && ("myTestPass".equals(password))) {
+			System.out.println (name + " " + password + " is connected");
 			List<GrantedAuthority> authorities = new ArrayList<>();
 			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 			return new UsernamePasswordAuthenticationToken(name, password, authorities);
 		} else {
+			System.out.println (name + " " + password + " is NOT connected");
 			throw new BadCredentialsException(String.format("Invalid login %s", name));
 		}
 	}

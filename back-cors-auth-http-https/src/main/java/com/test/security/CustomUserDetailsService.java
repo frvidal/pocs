@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		if (log.isDebugEnabled()) {
 			log.debug(String.format("loadUserByUsername(%s)", username));
 		}
-		return null;
+		return new TestUserDetails();
 	}
 
 }

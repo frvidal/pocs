@@ -6,13 +6,20 @@ import { AppComponent } from './app.component';
 import {TokenService} from './token.service';
 import {HttpTokenInterceptorService} from './http-token-interceptor.service';
 
+import { AppRoutingModule } from './app-routing.module';
+import { MainComponent } from './main/main.component';
+import { ConnectionComponent } from './connection/connection.component';
+
 @NgModule({
 	declarations: [
-		AppComponent
+		AppComponent,
+		MainComponent,
+		ConnectionComponent
 	],
 	imports: [
 		BrowserModule,
-		HttpClientModule
+		HttpClientModule,
+		AppRoutingModule
 	],
 	providers: [
 		TokenService, 

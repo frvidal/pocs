@@ -1,8 +1,8 @@
 
 import { HttpErrorResponse, HttpHandler, HttpHeaderResponse, HttpInterceptor, HttpProgressEvent, HttpRequest, HttpResponse, HttpSentEvent, HttpUserEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, of, throwError as observableThrowError } from 'rxjs';
-import { catchError, filter, finalize, switchMap, take, tap } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, Observable, throwError as observableThrowError, throwError } from 'rxjs';
+import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { Token } from './token';
 import { TokenService } from './token.service';
 
@@ -83,7 +83,7 @@ export class HttpTokenInterceptorService implements HttpInterceptor {
 				, switchMap(token => {
 					return next.handle(this.tokenService.addToken(req));
 				})
-			);			
+			);
 		}
 	}
 

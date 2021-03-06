@@ -1,7 +1,7 @@
-import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
-import { temporaryAllocator } from '@angular/compiler/src/render3/view/util';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, of, throwError } from 'rxjs';
+import { catchError, tap} from 'rxjs/operators';
 import { Token } from './token';
 
 @Injectable({

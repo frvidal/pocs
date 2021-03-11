@@ -8,19 +8,30 @@
     Server : 
     <input [value]="sonarQubeServer" (input)="sonarQubeServer=$event.target.value" id="sonarQubeServer"/>
     <button (click)="go()">Go</button>
-    <input type="checkbox" [checked]="reverseProxy" (change)="changeProxy($event)">Reverse Proxy
+    User <input [value]="user" (input)="user=$event.target.value" id="user"/>
+    Password <input [value]="password" (input)="password=$event.target.value" id="password"/>
 </p>
 
-<p>
-    Version : {{version}}
-</p>
+<div>
+    <span id="field">Version : {{version}}</span>
+</div>
 
-<p>
-    <select>
+<div>
+    <button (click)="loadSonarSupportedMetrics()" class="field">Load metrics</button>
+    <select class="field">
         <option *ngFor="let metric of metrics" [value]="metric.key">{{metric.name}}
         </option>
     </select> 
-</p>
+</div>
+
+<div>
+    <button (click)="loadSonarProjects()" class="field">Load Projects</button>
+    <select class="field">
+        <option *ngFor="let project of projects" [value]="project.key">{{project.name}}
+        </option>
+    </select> 
+</div>
+
 
 <span class="highlight">
     The connection without reverse proxy is throwing the error :

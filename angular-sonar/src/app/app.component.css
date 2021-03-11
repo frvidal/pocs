@@ -6,3 +6,8 @@ span.highlight {
 span.error {
     color: red;
 }
+
+.field {
+    margin: 10px;
+    padding: 5px;
+}

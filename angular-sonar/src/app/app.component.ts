@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 import { Metric } from './metric';
+import { Project } from './project';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,9 @@ export class AppComponent {
 
   public sonarQubeServer = 'http://localhost:9000';
 
-  public reverseProxy = true;
+  public user = 'admin';
+
+  public password = 'admin';
 
   public version = '';
 
@@ -22,26 +25,24 @@ export class AppComponent {
 
   public metrics = [];
 
+  public projects = [];
+
+  public connectionSettings = new Map<string, string>();
+
   constructor(private httpClient : HttpClient) {}
 
   public go() {
-	const urlSonar = (this.reverseProxy) ?
-		this.sonarQubeServer.replace('http://localhost:9000', window.location.origin + this.prefixSonarQube) : 
-		this.sonarQubeServer + this.prefixSonarQube;
 
-	this.initSonarServer(urlSonar);
-	if (this.reverseProxy) {
-		this.loadSonarSupportedMetrics(urlSonar);
-	} else {
-		this.authenticate(urlSonar).subscribe({
-			next: doneAndOk => {
-				if (doneAndOk) {
-					console.log ('connected');
-					this.loadSonarSupportedMetrics(urlSonar);
-				}
+	console.log ('urlSonar', this.sonarQubeServer);
+
+	this.initSonarServer(this.sonarQubeServer);
+	this.authenticate(this.sonarQubeServer).subscribe({
+		next: doneAndOk => {
+			if (doneAndOk) {
+				console.log ('Connected');
 			}
-		});
-	}
+		}
+	});
   }
 
 	/**
@@ -61,34 +62,35 @@ export class AppComponent {
 
 	public authenticate(urlSonar: string) {
 
-		const params = new HttpParams()
-			.set('login', 'admin')
-			.set('password', 'parissg75');
+		let params = new HttpParams()
+			.set('login', this.user)
+			.set('password', this.password);
 
 		return this.httpClient
-			.post<boolean>(urlSonar + '/api/authentication/login', '', { params: params})
+			.post<any>(urlSonar + '/api/authentication/login', '', {responseType: 'text' as 'json',  params: params})
 			.pipe(
 				take(1),
 				switchMap(r => { 
 					return of(true); 
-				}));
+				}
+			)
+		);
 	}
 
 	/**
 	 * Load the supported metrics of this Sonar server, which are supported by the application.
-	 * @param urlSonar the URL of the Sonar server
 	 */
-	private loadSonarSupportedMetrics(urlSonar: string) {
+	public loadSonarSupportedMetrics() {
 
 		this.metrics = [];
 
 		let headers: HttpHeaders = new HttpHeaders();
 
 		// No authentication required
-		const authdata = 'Basic ' + btoa('admin:parissg75');
-		headers = headers.append('Authorization', authdata);
+		// const authdata = 'Basic ' + btoa('admin:parissg75');
+		// headers = headers.append('Authorization', authdata);
 
-		this.httpClient.get(urlSonar + '/api/metrics/search?ps=500', {headers: headers}).subscribe({
+		this.httpClient.get(this.sonarQubeServer + '/api/metrics/search?ps=500', {headers: headers}).subscribe({
 			next: (metrics: any) => { 
 				metrics.metrics.forEach(m => {
 					this.metrics.push (new Metric(m.key, m.name));
@@ -97,8 +99,25 @@ export class AppComponent {
 		});
 	}
 
-	public changeProxy($event:any) {
-		this.reverseProxy = $event.target.checked;
-	}
+	/**
+	 * Load the projects declared on this Sonar server.
+	 */
+	 public loadSonarProjects() {
 
+		this.projects = [];
+
+		let headers: HttpHeaders = new HttpHeaders();
+
+		// No authentication required
+		const authdata = 'Basic ' + btoa(this.user + ':' + this.password);
+		headers = headers.append('Authorization', authdata);
+
+		this.httpClient.get(this.sonarQubeServer + '/api/components/search?ps=500&qualifiers=TRK', {headers: headers}).subscribe({
+			next: (response: any) => { 
+				response.components.forEach(c => {
+					this.projects.push (new Project(c.key, c.name));
+				});
+			 }
+		});
+	}
 }

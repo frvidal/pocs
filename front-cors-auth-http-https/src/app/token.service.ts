@@ -17,7 +17,7 @@ export class TokenService {
 
 		let headers: HttpHeaders = new HttpHeaders();
 		headers = headers.append('Content-Type', 'application/x-www-urlencoded');
-		headers = headers.append('Authorization', 'Basic ' + btoa('test-trusted-client' + ':secret'));
+		headers = headers.append('Authorization', 'Basic ' + btoa('fitzhi-trusted-client' + ':secret'));
 
 		const params = new HttpParams()
 			.set('refresh_token', this.token.refresh_token)
@@ -35,8 +35,7 @@ export class TokenService {
 					return req;
 			}
 		}
-		const temp = (this.token) ?
+		return (this.token) ?
 			req.clone({ setHeaders: { Authorization: 'Bearer ' + this.token.access_token } }) : req;
-		return temp;
 	}
 }

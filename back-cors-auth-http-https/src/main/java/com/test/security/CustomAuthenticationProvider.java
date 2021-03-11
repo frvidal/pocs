@@ -28,7 +28,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		if ( ("myTestUser".equals(name)) && ("myTestPass".equals(password))) {
 			System.out.println (name + " " + password + " is connected");
 			List<GrantedAuthority> authorities = new ArrayList<>();
-			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+			authorities.add(new SimpleGrantedAuthority("ROLE_TRUSTED_CLIENT"));
 			return new UsernamePasswordAuthenticationToken(name, password, authorities);
 		} else {
 			System.out.println (name + " " + password + " is NOT connected");

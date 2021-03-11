@@ -23,7 +23,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers("/api/ping").permitAll()
-		.antMatchers("/**").access("hasRole('ROLE_TRUSTED_CLIENT')")
+		.antMatchers("/**").hasRole("TRUSTED_CLIENT")
 		.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 	}
 	

@@ -1,7 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { AfterViewInit, Component } from '@angular/core';
-import { Token } from './token';
-import { TokenService } from './token.service';
+import { Component } from '@angular/core';
 
 @Component({
 	selector: 'app-root',

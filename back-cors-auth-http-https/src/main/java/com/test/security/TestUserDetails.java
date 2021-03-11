@@ -1,6 +1,7 @@
 package com.test.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -11,10 +12,10 @@ import com.test.security.CustomGrantedAuthority;
 
 public class TestUserDetails implements UserDetails {
 
-	private List<CustomGrantedAuthority> authorities = new ArrayList<>();
+	private List<GrantedAuthority> authorities = new ArrayList<>();
 
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		authorities.add(new CustomGrantedAuthority());
+		authorities.add(new SimpleGrantedAuthority("ROLE_TRUSTED_CLIENT"));
 		return authorities;
 	}
   

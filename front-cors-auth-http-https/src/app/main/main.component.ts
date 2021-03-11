@@ -29,11 +29,11 @@ export class MainComponent {
 	connectionOK() {
 		let headers: HttpHeaders = new HttpHeaders();
 		headers = headers.append('Content-Type', 'application/x-www-urlencoded');
-		headers = headers.append('Authorization', 'Basic ' + btoa('test-trusted-client' + ':secret'));
+		headers = headers.append('Authorization', 'Basic ' + btoa('fitzhi-trusted-client' + ':secret'));
 
 		const params = new HttpParams()
-			.set('username', 'myTestUser')
-			.set('password', 'myTestPass')
+			.set('username', 'admin')
+			.set('password', 'parissg75')
 			.set('grant_type', 'password');
 
 		this.httpClient.post<Token>
@@ -63,7 +63,7 @@ export class MainComponent {
 	connectionKO() {
 		let headers: HttpHeaders = new HttpHeaders();
 		headers = headers.append('Content-Type', 'application/x-www-urlencoded');
-		headers = headers.append('Authorization', 'Basic ' + btoa('test-trusted-client' + ':secret'));
+		headers = headers.append('Authorization', 'Basic ' + btoa('fitzhi-trusted-client' + ':secret'));
 
 		const params = new HttpParams()
 			.set('username', 'myTestUser')
@@ -93,7 +93,7 @@ export class MainComponent {
 	}
 
 	pingSecure() {
-		this.httpClient.get('http://localhost:8080/api/ping-secure', { responseType: 'text' as 'json' })
+		this.httpClient.get('http://localhost:8080/api/staff/1', { responseType: 'text' as 'json' })
 			.subscribe({
 				next: (result: string) => this.messagePingSecure = result,
 				error: response => {

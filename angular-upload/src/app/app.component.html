@@ -1,0 +1,6 @@
+<div id="container">
+  <button (click)="upload()">Upload</button>
+  <input id="file" name="file" class="input-file" type="file"
+		(change)="fileEvent($event)" /> 
+  <input id="uri" type="text" readonly value="{{uri}}"/>
+</div>

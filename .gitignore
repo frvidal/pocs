@@ -5,3 +5,8 @@ spring-file-uploader/.vscode/settings.json
 spring-file-uploader/.classpath
 spring-file-uploader/target
 angular-upload/.editorconfig
+.DS_Store
+git-scan/.classpath
+git-scan/.factorypath
+git-scan/.project
+git-scan/target

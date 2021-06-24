@@ -61,6 +61,7 @@ public class MyTest {
 				if (pr.isSuccessful()) {
 					if (!pr.getResult().isEmpty()) {
 						CompilationUnit cu =  pr.getResult().get();
+						
 						List<MarkerAnnotationExpr> l = cu.findAll(
 							MarkerAnnotationExpr.class, 
 							Predicate.isEqual(new MarkerAnnotationExpr("Service")));
@@ -71,7 +72,7 @@ public class MyTest {
 									String.format(
 										"%s %s %s", 
 										cu.getStorage().get().getFileName(),
-										mae,
+										mae.getNameAsString(),
 										this.getAuthor(git, pathRelative.toString(), mae.getBegin().get().line)
 									)
 								);

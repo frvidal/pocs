@@ -12,6 +12,9 @@ export class MainComponent {
 
 	title = 'Testing the connection to a backend server';
 
+	host = "http://localhost:8080";
+	host2 = "http://localhost:8080";
+
 	statusOK: string;
 	messageOK: string;
 
@@ -27,6 +30,7 @@ export class MainComponent {
 	constructor(public httpClient: HttpClient, public tokenService: TokenService) { }
 
 	connectionOK() {
+		console.log (this.host);
 		let headers: HttpHeaders = new HttpHeaders();
 		headers = headers.append('Content-Type', 'application/x-www-urlencoded');
 		headers = headers.append('Authorization', 'Basic ' + btoa('fitzhi-trusted-client' + ':secret'));
@@ -37,7 +41,7 @@ export class MainComponent {
 			.set('grant_type', 'password');
 
 		this.httpClient.post<Token>
-			('http://localhost:8080/oauth/token', '', { headers: headers, params: params })
+			(this.host + '/oauth/token', '', { headers: headers, params: params })
 			.subscribe({
 				next: (token: Token) => {
 					this.tokenService.token = token;
@@ -60,6 +64,10 @@ export class MainComponent {
 			});
 	}
 
+	onChange ($event) {
+		this.host = $event.target.value;
+	}
+
 	connectionKO() {
 		let headers: HttpHeaders = new HttpHeaders();
 		headers = headers.append('Content-Type', 'application/x-www-urlencoded');
@@ -71,7 +79,7 @@ export class MainComponent {
 			.set('grant_type', 'password');
 
 		this.httpClient.post<Token>
-			('http://localhost:8080/oauth/token', { headers: headers, params: params })
+			(this.host + '/oauth/token', { headers: headers, params: params })
 			.subscribe({
 				error: response => {
 					this.statusKO = response.status;
@@ -84,7 +92,7 @@ export class MainComponent {
 
 
 	ping() {
-		this.httpClient.get('http://localhost:8080/api/ping', { responseType: 'text' as 'json' })
+		this.httpClient.get(this.host + '/api/ping', { responseType: 'text' as 'json' })
 			.subscribe({
 				next: (result: string) => this.messagePing = result,
 				error: error => console.log('error', error)
@@ -93,7 +101,7 @@ export class MainComponent {
 	}
 
 	pingSecure() {
-		this.httpClient.get('http://localhost:8080/api/staff/1', { responseType: 'text' as 'json' })
+		this.httpClient.get(this.host + '/api/staff/1', { responseType: 'text' as 'json' })
 			.subscribe({
 				next: (result: string) => this.messagePingSecure = result,
 				error: response => {

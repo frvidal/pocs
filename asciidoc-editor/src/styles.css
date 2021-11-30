@@ -1,0 +1,6 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+@import url(//fonts.googleapis.com/css?family=Montserrat|Open+Sans);
+@import url(//asciidoctor.org/stylesheets/asciidoctor.css); /* Default asciidoc style framework - important */
+

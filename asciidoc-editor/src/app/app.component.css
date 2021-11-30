@@ -1,0 +1,12 @@
+.editor, .preview {
+    width: 800px;
+    height: 600px;
+}
+
+.preview {
+    margin-left: 10px;
+}
+.adocText {
+    width: 100%;
+    height: 100%;
+}

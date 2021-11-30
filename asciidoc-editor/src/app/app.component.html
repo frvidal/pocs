@@ -1,0 +1,8 @@
+<div style="display: flex">
+	<div class="editor" style="background-color: aqua;">
+		<textarea class="adocText" [(ngModel)]="adocText"  (input)="input($event)">
+		</textarea>
+	</div>
+	<div class="preview" [innerHTML]="html">
+	</div>
+</div>

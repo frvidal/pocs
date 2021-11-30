@@ -10,3 +10,11 @@ git-scan/.classpath
 git-scan/.factorypath
 git-scan/.project
 git-scan/target
+git-scan-javaparser/target
+git-explorer/.classpath
+git-explorer/.project
+git-explorer/target/
+asciidoc-editor/.browserslistrc
+asciidoc-editor/.editorconfig
+git-explorer/.factorypath
+git-explorer/.vscode/settings.json

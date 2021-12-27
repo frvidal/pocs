@@ -1,3 +1,4 @@
+import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Token } from '../token';
@@ -30,14 +31,14 @@ export class MainComponent {
 	constructor(public httpClient: HttpClient, public tokenService: TokenService) { }
 
 	connectionOK() {
-		console.log (this.host);
+
 		let headers: HttpHeaders = new HttpHeaders();
 		headers = headers.append('Content-Type', 'application/x-www-urlencoded');
-		headers = headers.append('Authorization', 'Basic ' + btoa('fitzhi-trusted-client' + ':secret'));
+		headers = headers.append('Authorization', 'Basic ' + btoa('testing-trusted-client' + ':secret'));
 
 		const params = new HttpParams()
-			.set('username', 'admin')
-			.set('password', 'parissg75')
+			.set('username', 'myTestUser')
+			.set('password', 'myTestPass')
 			.set('grant_type', 'password');
 
 		this.httpClient.post<Token>
@@ -71,7 +72,7 @@ export class MainComponent {
 	connectionKO() {
 		let headers: HttpHeaders = new HttpHeaders();
 		headers = headers.append('Content-Type', 'application/x-www-urlencoded');
-		headers = headers.append('Authorization', 'Basic ' + btoa('fitzhi-trusted-client' + ':secret'));
+		headers = headers.append('Authorization', 'Basic ' + btoa('testing-trusted-client' + ':secret'));
 
 		const params = new HttpParams()
 			.set('username', 'myTestUser')
@@ -101,7 +102,7 @@ export class MainComponent {
 	}
 
 	pingSecure() {
-		this.httpClient.get(this.host + '/api/staff/1', { responseType: 'text' as 'json' })
+		this.httpClient.get(this.host + '/api/ping-secure', { responseType: 'text' as 'json' })
 			.subscribe({
 				next: (result: string) => this.messagePingSecure = result,
 				error: response => {

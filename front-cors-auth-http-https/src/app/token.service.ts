@@ -17,7 +17,7 @@ export class TokenService {
 
 		let headers: HttpHeaders = new HttpHeaders();
 		headers = headers.append('Content-Type', 'application/x-www-urlencoded');
-		headers = headers.append('Authorization', 'Basic ' + btoa('fitzhi-trusted-client' + ':secret'));
+		headers = headers.append('Authorization', 'Basic ' + btoa('testing-trusted-client' + ':secret'));
 
 		const params = new HttpParams()
 			.set('refresh_token', this.token.refresh_token)

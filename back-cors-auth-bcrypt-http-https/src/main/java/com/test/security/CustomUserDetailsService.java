@@ -5,21 +5,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * @author Fr&eacute;d&eacute;ric VIDAL
  *
  */
 @Service
-@Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		if (log.isDebugEnabled()) {
-			log.debug(String.format("loadUserByUsername(%s)", username));
-		}
+		System.out.println(String.format("loadUserByUsername(%s)", username));
 		return new TestUserDetails();
 	}
 

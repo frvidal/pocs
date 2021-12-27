@@ -5,12 +5,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -22,30 +24,29 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity (debug = true)
 @Order(101)
 public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	ClientDetailsService clientDetailsService;
+	UserDetailsService userDetailsService;
 	
-	@Autowired
-	private AuthenticationProvider authenticationProvider;
-
-	@Autowired
-	public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authenticationProvider);
-	}
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			// User authentification security configuration
 			.anonymous().disable()
-			.authorizeRequests().antMatchers("/oauth/token").permitAll()
+			.authorizeRequests().antMatchers("/oauth/token/**").permitAll()
 			.anyRequest().authenticated();
 	}
 
+	@Autowired
+    public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+				System.out.println("Done...finito");
+    }	
+	
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -76,9 +77,9 @@ public class OAuth2SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return store;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Bean
-	public static NoOpPasswordEncoder passwordEncoder() {
-		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+	public static PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
+
 }

@@ -20,7 +20,8 @@ public class TestUserDetails implements UserDetails {
   
 	@Override
 	public String getPassword() {
-		return "myTestPass";
+		// This is th BCrypt encoding of myTestPass.
+		return "$2a$10$n9tRc.W1GG5FZ/tyqyA.oeMxZsd9iMYHSZi6vpLyXPKOsfq7WyHZ2";
 	}
 	
 	@Override

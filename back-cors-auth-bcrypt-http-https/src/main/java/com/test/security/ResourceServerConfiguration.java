@@ -21,6 +21,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
+		.antMatchers("/oauth/token/**").permitAll()
 		.antMatchers("/api/ping").permitAll()
 		.antMatchers("/**").hasRole("TRUSTED_CLIENT")
 		.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -29,8 +30,10 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	private UserDetailsService userDetailsService;
 	
 	@Autowired
-	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	public PasswordEncoder passwordEncoder;
 
 	/**
 	 * Duration of the access Token
@@ -46,13 +49,12 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-
 		clients.inMemory()
 	        .withClient(TRUSTED_CLIENT_USERNAME)
             .authorizedGrantTypes("password", "refresh_token")
             .authorities("ROLE_TRUSTED_CLIENT")
             .scopes("read", "write", "trust")
-            .secret("secret")
+            .secret(passwordEncoder.encode("secret"))
             .accessTokenValiditySeconds(accessTokenDuration)
             .refreshTokenValiditySeconds(refreshTokenDuration);
 	}
@@ -60,7 +62,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints.tokenStore(tokenStore).userApprovalHandler(userApprovalHandler)
-				.authenticationManager(authenticationManager).userDetailsService(userDetailsService);
+				.authenticationManager(authenticationManager)
+				.userDetailsService(userDetailsService);
 	}
 
 	@Override

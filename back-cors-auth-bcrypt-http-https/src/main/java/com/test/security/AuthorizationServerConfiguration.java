@@ -1,7 +1,6 @@
 package com.test.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -50,13 +49,13 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-	        .withClient(TRUSTED_CLIENT_USERNAME)
-            .authorizedGrantTypes("password", "refresh_token")
-            .authorities("ROLE_TRUSTED_CLIENT")
-            .scopes("read", "write", "trust")
-            .secret(passwordEncoder.encode("secret"))
-            .accessTokenValiditySeconds(accessTokenDuration)
-            .refreshTokenValiditySeconds(refreshTokenDuration);
+			.withClient(TRUSTED_CLIENT_USERNAME)
+			.authorizedGrantTypes("password", "refresh_token")
+			.authorities("ROLE_TRUSTED_CLIENT")
+			.scopes("read", "write", "trust")
+			.secret(passwordEncoder.encode("secret"))
+			.accessTokenValiditySeconds(accessTokenDuration)
+			.refreshTokenValiditySeconds(refreshTokenDuration);
 	}
 
 	@Override

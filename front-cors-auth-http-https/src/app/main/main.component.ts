@@ -33,17 +33,20 @@ export class MainComponent {
 	connectionOK() {
 
 		let headers: HttpHeaders = new HttpHeaders();
-		headers = headers.append('Content-Type', 'application/x-www-urlencoded');
+		headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		headers = headers.append('Authorization', 'Basic ' + btoa('testing-trusted-client' + ':secret'));
 
-		const params = new HttpParams()
+		const body = new HttpParams()
 			.set('username', 'myTestUser')
 			.set('password', 'myTestPass')
-			.set('grant_type', 'password');
+			.set('grant_type', 'password')
 
 		this.httpClient.post<Token>
-			(this.host + '/oauth/token', '', { headers: headers, params: params })
-			.subscribe({
+			(
+				this.host + '/oauth/token',
+				body.toString(),
+				{ headers: headers },
+			).subscribe({
 				next: (token: Token) => {
 					this.tokenService.token = token;
 					if (token) {

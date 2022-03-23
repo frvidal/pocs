@@ -1,3 +1,4 @@
+git-scan-javaparser/target
 back-cors-auth-http-https/target/
 back-cors-auth-bcrypt-http-https/target/
 spring-file-uploader/.settings/
@@ -5,14 +6,12 @@ spring-file-uploader/.project
 spring-file-uploader/.vscode/settings.json
 spring-file-uploader/.classpath
 spring-file-uploader/target
-git-scan-javaparser/target
 angular-upload/.editorconfig
 .DS_Store
 git-scan/.classpath
 git-scan/.factorypath
 git-scan/.project
 git-scan/target
-git-scan-javaparser/target
 git-explorer/.classpath
 git-explorer/.project
 git-explorer/target/

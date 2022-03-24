@@ -12,7 +12,8 @@
 	<properties>
 		<jdk.version>1.8</jdk.version>
 		<spring.version>5.3.17</spring.version>
-		<spring-oauth.version>2.3.6.RELEASE</spring-oauth.version>
+		<spring-security.version>5.6.2</spring-security.version>
+		<spring-boot.version>2.1.13.RELEASE</spring-boot.version>
 		<springsecurityoauth2.version>2.3.6.RELEASE</springsecurityoauth2.version>
 		<spring-reactor-test.version>3.3.4.RELEASE</spring-reactor-test.version>
 		<jstl.version>1.2</jstl.version>

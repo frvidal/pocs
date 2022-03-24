@@ -1,3 +1,7 @@
 .marge {
 	margin: 2px;
 }
+
+.error {
+	color: red;
+}

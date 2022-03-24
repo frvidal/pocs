@@ -11,6 +11,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main/main.component';
 import { ConnectionComponent } from './connection/connection.component';
 
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
+
+
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -20,7 +24,8 @@ import { ConnectionComponent } from './connection/connection.component';
 	imports: [
 		BrowserModule,
 		HttpClientModule,
-		AppRoutingModule
+		AppRoutingModule,
+		SocialLoginModule
 	],
 	providers: [
 		TokenService, 
@@ -35,7 +40,21 @@ import { ConnectionComponent } from './connection/connection.component';
 			useClass: HttpRefreshTokenErrorInterceptorService,
 			multi: true
 		},
-],
+		{
+			provide: 'SocialAuthServiceConfig',
+			useValue: {
+			  autoLogin: false,
+			  providers: [
+				{
+				  id: GoogleLoginProvider.PROVIDER_ID,
+				  provider: new GoogleLoginProvider('690807651852-sqjienqot7ui0pufj4ie4n320pss5ipc.apps.googleusercontent.com')
+				}
+			  ]
+			} as SocialAuthServiceConfig,
+		  }
+
+
+	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

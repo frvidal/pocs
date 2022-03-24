@@ -1,6 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 import { Token } from '../token';
 import { TokenService } from '../token.service';
 
@@ -11,13 +12,18 @@ import { TokenService } from '../token.service';
 })
 export class MainComponent {
 
-	title = 'Testing the connection to a backend server';
+	title = 'Testing multiple server';
 
 	host = "http://localhost:8080";
 	host2 = "http://localhost:8080";
 
 	statusOK: string;
 	messageOK: string;
+
+	statusOKWithGoogle: string;
+	messageOKWithGoogle: string;
+	statusKOWithGoogle: string;
+	messageKOWithGoogle: string;
 
 	statusKO: string;
 	messageKO: string;
@@ -28,7 +34,10 @@ export class MainComponent {
 	statusPingSecure: string;
 	messagePingSecure: string;
 
-	constructor(public httpClient: HttpClient, public tokenService: TokenService) { }
+	constructor(
+		private httpClient: HttpClient, 
+		private tokenService: TokenService,
+		private authService: SocialAuthService) { }
 
 	connectionOK() {
 
@@ -53,7 +62,7 @@ export class MainComponent {
 						console.log('access_token %s expires in %s', token.access_token, token.expires_in);
 					}
 					this.statusOK = 'OK'
-					this.messageOK = token.refresh_token;
+					this.messageOK = token.access_token;
 
 					this.tokenService.refreshToken$().subscribe({
 						next: token => {
@@ -115,4 +124,30 @@ export class MainComponent {
 			});
 	}
 
+
+	signInWithGoogle(): void {
+		const promise = this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+		promise.then(
+			(user) => {
+				console.log (user.firstName)
+				console.log (`id ${user.id}`)
+				console.log (`firstname ${user.firstName}`)
+				console.log (`lastname ${user.lastName}`)
+				console.log (`token ${user.response.access_token}`)
+				this.statusOKWithGoogle = 'OK'
+				this.messageOKWithGoogle = user.response.access_token;
+				this.statusKOWithGoogle = ''
+				this.messageKOWithGoogle = '';
+
+			},
+			(error) => {
+				console.log(error);
+				this.statusOKWithGoogle = ''
+				this.messageOKWithGoogle = '';
+				this.statusKOWithGoogle = 'KO'
+				this.messageKOWithGoogle = error.error;
+
+			}
+		)
+	}
 }

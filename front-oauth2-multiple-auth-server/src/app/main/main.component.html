@@ -1,6 +1,17 @@
 <h3>
 	{{title}}
 </h3>
+
+<div>
+	<button class="marge" (click)="signInWithGoogle()">Connection Google OK</button>
+	<label class="marge">{{statusOKWithGoogle}}</label>
+	<label class="marge">{{messageOKWithGoogle}}</label>
+
+	<label class="marge error">{{statusKOWithGoogle}}</label>
+	<label class="marge error">{{messageKOWithGoogle}}</label>
+</div>
+<br/>
+
 <div>
 	<input id="host" (input)="host2" [value]="host" (change)="onChange($event)"  />
 </div>
@@ -10,16 +21,19 @@
 	<label class="marge">{{statusOK}}</label>
 	<label class="marge">{{messageOK}}</label>
 </div>
+
 <div>
 	<button class="marge" (click)="connectionKO()">Connection KO</button>
 	<label class="marge">{{statusKO}}</label>
 	<label class="marge">{{messageKO}}</label>
 </div>
+
 <div>
 	<button class="marge" (click)="ping()">/api/ping</button>
 	<label class="marge">{{statusPing}}</label>
 	<label class="marge">{{messagePing}}</label>
 </div>
+
 <div>
 	<button class="marge" (click)="pingSecure()">/api/ping-secure</button>
 	<label class="marge">{{statusPingSecure}}</label>
